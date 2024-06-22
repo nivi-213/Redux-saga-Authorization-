@@ -1,24 +1,50 @@
-// sagas/authSaga.js
+// // sagas/authSaga.js
 
+// import { takeLatest, call, put } from 'redux-saga/effects';
+// import { registerSuccess, registerFailure } from '../action/authAction';
+// import { REGISTER_REQUEST } from '../action/authType';
+// import { apiCallToRegister } from '../server/api'; // Adjusted the path
+
+// function* handleRegister(action) {
+//   try {
+
+//     const response = yield call(apiCallToRegister, action.payload);
+
+//     yield put(registerSuccess(response));
+//   } catch (error) {
+ 
+//     yield put(registerFailure(error.message));
+//   }
+// }
+
+// export default function* authSaga() {
+//   yield takeLatest(REGISTER_REQUEST, handleRegister);
+// }
 import { takeLatest, call, put } from 'redux-saga/effects';
-import {  registerSuccess, registerFailure } from '../action/authAction';
-import { REGISTER_REQUEST, } from '../action/authType';
+import axios from 'axios';
+import {
+  SIGNUP_REQUEST,
+  signupSuccess,
+  signupFailure,
+} from '../action/authAction';
 
-import { api } from '../server/api'; // Assuming you have an API service set up
-
-function* handleRegister(action) {
+function* handleSignup(action) {
   try {
-    // Call your API to register the user
-    const response = yield call(api.post, '/auth/user/register', action.payload);
-
-    // Dispatch a success action if registration was successful
-    yield put(registerSuccess());
+    const response = yield call(
+      axios.post,
+      'http://localhost:8080/api/auth/user/register',
+      action.payload.userData
+    );
+    const { token } = response.data;
+    yield put(signupSuccess(token));
+    // Optionally handle localStorage setItem here
   } catch (error) {
-    // Dispatch a failure action if there was an error
-    yield put(registerFailure(error.message));
+    yield put(signupFailure(error));
   }
 }
 
-export default function* authSaga() {
-  yield takeLatest(REGISTER_REQUEST, handleRegister);
+function* signupSaga() {
+  yield takeLatest(SIGNUP_REQUEST, handleSignup);
 }
+
+export default signupSaga;

@@ -1,30 +1,20 @@
 // store.js
 
-import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-
-import rootSaga from './Saga'; // Import your root saga
-import authReducer from './authSlice'; // Import your auth reducer
+import rootReducer from './authSlice'; // Adjust path as needed
+import rootSaga from './Saga'; // Adjust path as needed
 
 // Create saga middleware
 const sagaMiddleware = createSagaMiddleware();
 
-// Combine reducers if you have multiple reducers
-const rootReducer = combineReducers({
-  auth: authReducer,
-  // Add more reducers here if needed
-});
-
-// Apply middleware including saga middleware
-const middleware = applyMiddleware(sagaMiddleware);
-
-// Create store with combined reducers, middleware, and Redux DevTools extension
+// Create Redux store with combined reducers and middleware
 const store = createStore(
   rootReducer,
-  middleware
+  applyMiddleware(sagaMiddleware)
 );
 
-// Run your root saga
+// Run the root saga
 sagaMiddleware.run(rootSaga);
 
 export default store;

@@ -4,6 +4,7 @@ import './App.css';
 import RegisterForm from './components/SignupForm';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './components/login/Login';
+import LoginForm from './components/login/Login';
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
         <Routes>
          
           <Route path="/signup" element={<RegisterForm />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<LoginForm />} />
           
       </Routes>
       </BrowserRouter>

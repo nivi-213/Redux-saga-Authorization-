@@ -1,27 +1,64 @@
-// reducers/authReducer.js
+// // reducers/authReducer.js
 
-import { REGISTER_SUCCESS, REGISTER_FAILURE } from '../action/authType';
+// import { REGISTER_SUCCESS, REGISTER_FAILURE } from '../action/authType';
+
+// const initialState = {
+//   registering: false,
+//   error: null,
+//   formData: {}, 
+// };
+
+// export default function authReducer(state = initialState, action) {
+//   switch (action.type) {
+//     case REGISTER_SUCCESS:
+//       return {
+//         ...state,
+//         registering: false,
+//         error: null,
+//       };
+//     case REGISTER_FAILURE:
+//       return {
+//         ...state,
+//         registering: false,
+//         error: action.payload,
+//       };
+//     default:
+//       return state;
+//   }
+// }
+import { combineReducers } from 'redux';
+import { SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE } from '../action/authAction';
 
 const initialState = {
-  registering: false,
-  error: null,
+  loading: false,
+  message: '',
+  errors: {},
 };
 
-export default function authReducer(state = initialState, action) {
+const signupReducer = (state = initialState, action) => {
   switch (action.type) {
-    case REGISTER_SUCCESS:
+    case SIGNUP_REQUEST:
       return {
         ...state,
-        registering: false,
-        error: null,
+        loading: true,
       };
-    case REGISTER_FAILURE:
+    case SIGNUP_SUCCESS:
       return {
         ...state,
-        registering: false,
-        error: action.payload,
+        loading: false,
+        message: 'User registered successfully!',
+      };
+    case SIGNUP_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        errors: action.payload.error,
       };
     default:
       return state;
   }
-}
+};
+
+export default combineReducers({
+  signup: signupReducer,
+});
