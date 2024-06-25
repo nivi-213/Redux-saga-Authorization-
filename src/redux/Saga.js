@@ -1,50 +1,48 @@
-// // sagas/authSaga.js
 
-// import { takeLatest, call, put } from 'redux-saga/effects';
-// import { registerSuccess, registerFailure } from '../action/authAction';
-// import { REGISTER_REQUEST } from '../action/authType';
-// import { apiCallToRegister } from '../server/api'; // Adjusted the path
-
-// function* handleRegister(action) {
-//   try {
-
-//     const response = yield call(apiCallToRegister, action.payload);
-
-//     yield put(registerSuccess(response));
-//   } catch (error) {
- 
-//     yield put(registerFailure(error.message));
-//   }
-// }
-
-// export default function* authSaga() {
-//   yield takeLatest(REGISTER_REQUEST, handleRegister);
-// }
 import { takeLatest, call, put } from 'redux-saga/effects';
-import axios from 'axios';
+import {
+  signupUser,
+
+} from '../server/api';
 import {
   SIGNUP_REQUEST,
-  signupSuccess,
-  signupFailure,
+  SIGNUP_SUCCESS,
+  SIGNUP_FAILURE,
+
 } from '../action/authAction';
 
-function* handleSignup(action) {
+function* signupSaga(action) {
   try {
-    const response = yield call(
-      axios.post,
-      'http://localhost:8080/api/auth/user/register',
-      action.payload.userData
-    );
-    const { token } = response.data;
-    yield put(signupSuccess(token));
-    // Optionally handle localStorage setItem here
+    const response = yield call(signupUser, action.payload);
+    yield put({ type: SIGNUP_SUCCESS, payload: response.data });
+    // Handle navigation inside the component based on the state
   } catch (error) {
-    yield put(signupFailure(error));
+    if (error.response) {
+      const errorList = error.response.data.error.errorList;
+      const newErrors = {};
+      errorList.forEach((err) => {
+        if (err.includes('Duplicate phone number')) {
+          newErrors.mobileNo = 'This mobile number is already registered.';
+        } else if (err.includes('user email')) {
+          newErrors.email = 'This email is already registered.';
+        } else if (err.includes('user name')) {
+          newErrors.userName = 'This username is already taken.';
+        } else if (err.includes('user password')) {
+          newErrors.password = 'This password is already in use.';
+        } else if (err.includes('role is not applicable')) {
+          newErrors.userRole = "Role 'Admin' is not applicable for registration.";
+        }
+      });
+      yield put({ type: SIGNUP_FAILURE, payload: newErrors });
+    } else {
+      yield put({ type: SIGNUP_FAILURE, payload: { general: 'Something went wrong. Please try again.' } });
+    }
   }
 }
 
-function* signupSaga() {
-  yield takeLatest(SIGNUP_REQUEST, handleSignup);
-}
 
-export default signupSaga;
+
+export default function* rootSaga() {
+  yield takeLatest(SIGNUP_REQUEST, signupSaga);
+
+}
