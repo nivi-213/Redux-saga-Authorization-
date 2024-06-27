@@ -115,11 +115,11 @@ const LoginForm = () => {
   // Formik initialization
   const formik = useFormik({
     initialValues: {
-      fullName: '',
+      email: '',
       password: '',
     },
     validationSchema: Yup.object({
-      fullName: Yup.string()
+      email: Yup.string()
         .required('Full name or email is required'),
       password: Yup.string()
         .required('Password is required'),
@@ -148,11 +148,11 @@ const LoginForm = () => {
               type="text"
               className="form-control logininput"
               placeholder="Enter email or username"
-              id="fullName"
-              {...formik.getFieldProps('fullName')}
+              id="email"
+              {...formik.getFieldProps('email')}
             />
-            {formik.touched.fullName && formik.errors.fullName ? (
-              <div className="text-danger">{formik.errors.fullName}</div>
+            {formik.touched.email && formik.errors.email ? (
+              <div className="text-danger">{formik.errors.email}</div>
             ) : null}
           </div>
           <div className="mb-3 password-field">

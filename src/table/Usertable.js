@@ -1,12 +1,13 @@
-
+// UserTable.js
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-// import './register.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchUser, updateUser, deleteUser } from '../action/authAction';
 
 const UserTable = () => {
-  const [userData, setUserData] = useState(null);
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.user.userData);
+  const error = useSelector((state) => state.user.error);
+
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     id: '',
@@ -15,46 +16,27 @@ const UserTable = () => {
     mobileNo: '',
     status: '',
   });
-  
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const token = localStorage.getItem('token');
-      const username = localStorage.getItem('username');
+    const token = localStorage.getItem('token');
+    const useremail = localStorage.getItem('email');
 
-      if (!token || !username) {
-        setError({ error: { reason: 'Token or username not found in local storage' } });
-        return;
-      }
+    if (token && useremail) {
+      dispatch(fetchUser(useremail));
+    }
+  }, [dispatch]);
 
-      try {
-        const response = await axios.get(`http://localhost:8080/api/user/getUser/${username}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.headers['content-type'] !== 'application/json') {
-          throw new Error('Server did not respond with JSON data');
-        }
-
-        setUserData(response.data);
-        setFormData({
-          id: response.data.Details.id,
-          userName: response.data.Details.userName,
-          email: response.data.Details.email,
-          mobileNo: response.data.Details.mobileNo,
-          status: response.data.Details.status,
-        });
-      } catch (err) {
-        const defaultError = { error: { reason: 'Unknown error occurred' }, timeStamp: new Date().toISOString() };
-        setError(err.response?.data || defaultError);
-      }
-    };
-
-    fetchUserData();
-  }, []);
+  useEffect(() => {
+    if (userData) {
+      setFormData({
+        id: userData.Details.id,
+        userName: userData.Details.userName,
+        email: userData.Details.email,
+        mobileNo: userData.Details.mobileNo,
+        status: userData.Details.status,
+      });
+    }
+  }, [userData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -64,64 +46,20 @@ const UserTable = () => {
     });
   };
 
-  const handleEdit = async () => {
-    const token = localStorage.getItem('token');
+  const handleEdit = () => {
+    dispatch(updateUser(formData));
+    setIsEditing(false);
+  };
 
-    if (!token) {
-        setError({ error: { reason: 'Token not found in local storage' } });
-        return;
-    }
-
-    try {
-        const response = await axios.put(`http://localhost:8080/api/user/update`, {
-            id: formData.id,
-            userName: formData.userName,
-            email: formData.email,
-            mobileNo: formData.mobileNo,
-            status: formData.status,
-        }, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-
-        setUserData(response.data.Details);
-        setIsEditing(false);
-    } catch (err) {
-        const defaultError = { error: { reason: 'Unknown error occurred' }, timeStamp: new Date().toISOString() };
-        setError(err.response?.data || defaultError);
-    }
-};
-
-  const handleDelete = async () => {
-    const token = localStorage.getItem('token');
-    const username = localStorage.getItem('username');
-
-    if (!token || !username) {
-      setError({ error: { reason: 'Token or username not found in local storage' } });
-      return;
-    }
-
-    try {
-      await axios.delete(`http://localhost:8080/api/user/deleteUser/${username}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setUserData(null);
-      alert('User deleted successfully');
-      navigate('/login');
-    } catch (err) {
-      const defaultError = { error: { reason: 'Unknown error occurred' }, timeStamp: new Date().toISOString() };
-      setError(err.response?.data || defaultError);
-    }
+  const handleDelete = () => {
+    const useremail = localStorage.getItem('email');
+    dispatch(deleteUser(useremail));
   };
 
   if (error) {
     return (
       <div>
-        <p>Error: {error.error?.reason || 'No error message available'}</p>
+        <p>Error: {error.reason || 'No error message available'}</p>
         <p>Timestamp: {error.timeStamp || 'No timestamp available'}</p>
       </div>
     );
@@ -174,8 +112,12 @@ const UserTable = () => {
                   onChange={handleInputChange}
                 />
               </label>
-              <button className="btn btn-primary" onClick={handleEdit}>Save</button>
-              <button className="btn btn-secondary" onClick={() => setIsEditing(false)}>Cancel</button>
+              <button className="btn btn-primary" onClick={handleEdit}>
+                Save
+              </button>
+              <button className="btn btn-secondary" onClick={() => setIsEditing(false)}>
+                Cancel
+              </button>
             </div>
           ) : (
             <div>
@@ -196,8 +138,12 @@ const UserTable = () => {
                     <td>{userData.Details.mobileNo}</td>
                     <td>{userData.Details.status}</td>
                     <td>
-                      <button className="btn btn-primary" onClick={() => setIsEditing(true)}>Edit</button>
-                      <button className="btn btn-danger" onClick={handleDelete}>Delete</button>
+                      <button className="btn btn-primary" onClick={() => setIsEditing(true)}>
+                        Edit
+                      </button>
+                      <button className="btn btn-danger" onClick={handleDelete}>
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -206,7 +152,7 @@ const UserTable = () => {
           )}
         </div>
       ) : (
-        <p>Deleted...</p>
+        <p>Loading...</p>
       )}
     </div>
   );

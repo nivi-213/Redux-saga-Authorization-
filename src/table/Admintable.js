@@ -1,16 +1,88 @@
-// // src/components/AdminTable.js
-// import React, { useEffect } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { fetchUsersRequest } from '../action/authAction';
+// // // src/components/AdminTable.js
+// // import React, { useEffect } from 'react';
+// // import { useDispatch, useSelector } from 'react-redux';
+// // import { fetchUsersRequest } from '../action/authAction';
+
+// // const AdminTable = () => {
+// //   const dispatch = useDispatch();
+// //   const { users,  } = useSelector((state) => state);
+
+// //   useEffect(() => {
+// //     dispatch(fetchUsersRequest());
+// //   }, [dispatch]);
+
+
+// //   return (
+// //     <div className="container tab-style">
+// //       <div>
+// //         <h2>Admin Profile</h2>
+// //         <table className="table">
+// //           <thead>
+// //             <tr>
+// //               <th>User Name</th>
+// //               <th>Email</th>
+// //               <th>Mobile Number</th>
+// //               <th>Status</th>
+// //             </tr>
+// //           </thead>
+// //           <tbody>
+// //             {users.map((user) => (
+// //               <tr key={user.userId}>
+// //                 <td>{user.userName}</td>
+// //                 <td>{user.email}</td>
+// //                 <td>{user.mobileNo}</td>
+// //                 <td>{user.status}</td>
+// //               </tr>
+// //             ))}
+// //           </tbody>
+// //         </table>
+// //       </div>
+// //     </div>
+// //   );
+// // };
+
+// // export default AdminTable;
+// import React, { useState, useEffect } from 'react';
+// import axios from 'axios';
+// // import './UserTable.css';
 
 // const AdminTable = () => {
-//   const dispatch = useDispatch();
-//   const { users,  } = useSelector((state) => state);
+//   const [users, setUsers] = useState([]);
+//   const [error, setError] = useState(null);
 
 //   useEffect(() => {
-//     dispatch(fetchUsersRequest());
-//   }, [dispatch]);
+//     const fetchUsers = async () => {
+//       const token = localStorage.getItem('token');
 
+//       if (!token) {
+//         setError('Token not found in local storage');
+//         return;
+//       }
+
+//       try {
+//         const response = await axios.get('http://localhost:8080/api/admin/getAllusers', {
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//           },
+//         });
+
+//         setUsers(response.data);
+//       } catch (error) {
+//         setError('Error fetching user data');
+//         console.error('Error fetching user data:', error);
+//       }
+//     };
+
+//     fetchUsers();
+//   }, []);
+
+//   if (error) {
+//     return (
+//       <div className="container tab-style">
+//         <p>Error: {error}</p>
+//       </div>
+//     );
+//   }
 
 //   return (
 //     <div className="container tab-style">
@@ -22,66 +94,48 @@
 //               <th>User Name</th>
 //               <th>Email</th>
 //               <th>Mobile Number</th>
+     
+
 //               <th>Status</th>
 //             </tr>
 //           </thead>
 //           <tbody>
-//             {users.map((user) => (
+//             {users&&users.map(user => (
 //               <tr key={user.userId}>
 //                 <td>{user.userName}</td>
 //                 <td>{user.email}</td>
 //                 <td>{user.mobileNo}</td>
 //                 <td>{user.status}</td>
+        
 //               </tr>
 //             ))}
 //           </tbody>
-//         </table>
+//         </table>``
 //       </div>
 //     </div>
 //   );
 // };
 
 // export default AdminTable;
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-// import './UserTable.css';
+// src/components/AdminTable.js
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUsersRequest } from '../action/authAction';
 
 const AdminTable = () => {
-  const [users, setUsers] = useState([]);
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const { users, loading, error } = useSelector((state) => state);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const token = localStorage.getItem('token');
+    dispatch(fetchUsersRequest());
+  }, [dispatch]);
 
-      if (!token) {
-        setError('Token not found in local storage');
-        return;
-      }
-
-      try {
-        const response = await axios.get('http://localhost:8080/api/admin/getAllusers', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setUsers(response.data);
-      } catch (error) {
-        setError('Error fetching user data');
-        console.error('Error fetching user data:', error);
-      }
-    };
-
-    fetchUsers();
-  }, []);
+  if (loading) {
+    return <div className="container tab-style"><p>Loading...</p></div>;
+  }
 
   if (error) {
-    return (
-      <div className="container tab-style">
-        <p>Error: {error}</p>
-      </div>
-    );
+    return <div className="container tab-style"><p>Error: {error}</p></div>;
   }
 
   return (
@@ -94,23 +148,20 @@ const AdminTable = () => {
               <th>User Name</th>
               <th>Email</th>
               <th>Mobile Number</th>
-     
-
               <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            {users&&users.map(user => (
+            {users.map((user) => (
               <tr key={user.userId}>
                 <td>{user.userName}</td>
                 <td>{user.email}</td>
                 <td>{user.mobileNo}</td>
                 <td>{user.status}</td>
-        
               </tr>
             ))}
           </tbody>
-        </table>``
+        </table>
       </div>
     </div>
   );
