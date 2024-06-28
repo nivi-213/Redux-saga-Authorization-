@@ -65,6 +65,7 @@ const SignupForm = () => {
         });
 
         setErrors(formattedErrors);
+        console.log(formattedErrors)
       }
     }
     setSubmitting(true);
@@ -76,6 +77,7 @@ const SignupForm = () => {
     }
   }, [message, navigate]);
 
+   
   return (
     <div id="signup-form" className="container mt-5">
       {message && <p>{message}</p>}
@@ -109,7 +111,7 @@ const SignupForm = () => {
                 </div>
               </div>
             
-              <div className="mb-3 col-md-12">
+              <div className="mb-3  col-sm-12">
                 <div className="input-group">
                   <Field
                     type={showPassword ? 'text' : 'password'}
@@ -173,8 +175,8 @@ const SignupForm = () => {
               <p className="text-center mt-3">
                 Clicking <strong>Create Account</strong> means that you agree to
                 our <a href="javascript:void(0)">terms of service</a>.
-                <a href="/login" className="ms-4">
-                  Login
+                <a href="/login" className="ms-4 mt-5">
+                  Already have an Account? Login
                 </a>
               </p>
               <hr />
@@ -187,75 +189,136 @@ const SignupForm = () => {
 };
 
 export default SignupForm;
-// import React from 'react';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'bootstrap-icons/font/bootstrap-icons.css';
+// import * as React from 'react';
+// import Avatar from '@mui/material/Avatar';
+// import Button from '@mui/material/Button';
+// import CssBaseline from '@mui/material/CssBaseline';
+// import TextField from '@mui/material/TextField';
+// import FormControlLabel from '@mui/material/FormControlLabel';
+// import Checkbox from '@mui/material/Checkbox';
+// import { Link } from '@mui/material';  // Correct import for Link
+// import Grid from '@mui/material/Grid';
+// import Box from '@mui/material/Box';
+// import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+// import Typography from '@mui/material/Typography';
+// import Container from '@mui/material/Container';
+// import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-// const LoginPage = () => {
+// function Copyright(props) {
 //   return (
-//     <div className="login-page ">
-//       <div className="container">
-//         <div className="row">
-//           <div className="col-lg-9 offset-lg-1">
-//             <h3 className="mb-3">Login Now</h3>
-//             <div className="bg-white shadow rounded">
-//               <div className="row">
-//                 <div className="col-md-7 pe-0">
-//                   <div className="form-left h-100 py-5 px-5">
-//                     <form action="" className="row g-4">
-//                       <div className="col-12">
-//                         <label>Username<span className="text-danger">*</span></label>
-//                         <div className="input-group">
-//                           <div className="input-group-text">
-//                             <i className="bi bi-person-fill"></i>
-//                           </div>
-//                           <input type="text" className="form-control" placeholder="Enter Username" />
-//                         </div>
-//                       </div>
-//                       <div className="col-12">
-//                         <label>Password<span className="text-danger">*</span></label>
-//                         <div className="input-group">
-//                           <div className="input-group-text">
-//                             <i className="bi bi-lock-fill"></i>
-//                           </div>
-//                           <input type="password" className="form-control" placeholder="Enter Password" />
-//                         </div>
-//                       </div>
-//                       <div className="col-sm-6">
-//                         <div className="form-check">
-//                           <input className="form-check-input" type="checkbox" id="inlineFormCheck" />
-//                           <label className="form-check-label" htmlFor="inlineFormCheck">
-//                             Remember me
-//                           </label>
-//                         </div>
-//                       </div>
-//                       <div className="col-sm-6">
-//                         <a href="#" className="float-end text-primary">
-//                           Forgot Password?
-//                         </a>
-//                       </div>
-//                       <div className="col-12">
-//                         <button type="submit" className="btn btn-primary px-4 float-end mt-4">
-//                           login
-//                         </button>
-//                       </div>
-//                     </form>
-//                   </div>
-//                 </div>
-//                 <div className="col-md-5 ps-0 d-none d-md-block">
-//                   <div className="form-right h-100 bg-primary text-white text-center pt-5">
-//                     <i className="bi bi-bootstrap"></i>
-//                     <h2 className="fs-1">Welcome Back!!!</h2>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//             <p className="text-end text-secondary mt-3">Bootstrap 5 Login Page Design</p>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
+//     <Typography variant="body2" color="text.secondary" align="center" {...props}>
+//       {'Copyright © '}
+//       <Link color="inherit" href="https://mui.com/">
+//         Your Website
+//       </Link>{' '}
+//       {new Date().getFullYear()}
+//       {'.'}
+//     </Typography>
 //   );
-// };
+// }
 
-// export default LoginPage;
+// // TODO remove, this demo shouldn't need to reset the theme.
+
+// const defaultTheme = createTheme();
+
+// export default function SignUp() {
+//   const handleSubmit = (event) => {
+//     event.preventDefault();
+//     const data = new FormData(event.currentTarget);
+//     console.log({
+//       email: data.get('email'),
+//       password: data.get('password'),
+//     });
+//   };
+
+//   return (
+//     <ThemeProvider theme={defaultTheme}>
+//       <Container component="main" maxWidth="xs">
+//         <CssBaseline />
+//         <Box
+//           sx={{
+//             marginTop: 8,
+//             display: 'flex',
+//             flexDirection: 'column',
+//             alignItems: 'center',
+//           }}
+//         >
+//           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+//             <LockOutlinedIcon />
+//           </Avatar>
+//           <Typography component="h1" variant="h5">
+//             Sign up
+//           </Typography>
+//           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+//             <Grid container spacing={2}>
+//               <Grid item xs={12} sm={6}>
+//                 <TextField
+//                   autoComplete="given-name"
+//                   name="firstName"
+//                   required
+//                   fullWidth
+//                   id="firstName"
+//                   label="First Name"
+//                   autoFocus
+//                 />
+//               </Grid>
+//               <Grid item xs={12} sm={6}>
+//                 <TextField
+//                   required
+//                   fullWidth
+//                   id="lastName"
+//                   label="Last Name"
+//                   name="lastName"
+//                   autoComplete="family-name"
+//                 />
+//               </Grid>
+//               <Grid item xs={12}>
+//                 <TextField
+//                   required
+//                   fullWidth
+//                   id="email"
+//                   label="Email Address"
+//                   name="email"
+//                   autoComplete="email"
+//                 />
+//               </Grid>
+//               <Grid item xs={12}>
+//                 <TextField
+//                   required
+//                   fullWidth
+//                   name="password"
+//                   label="Password"
+//                   type="password"
+//                   id="password"
+//                   autoComplete="new-password"
+//                 />
+//               </Grid>
+//               <Grid item xs={12}>
+//                 <FormControlLabel
+//                   control={<Checkbox value="allowExtraEmails" color="primary" />}
+//                   label="I want to receive inspiration, marketing promotions and updates via email."
+//                 />
+//               </Grid>
+//             </Grid>
+//             <Button
+//               type="submit"
+//               fullWidth
+//               variant="contained"
+//               sx={{ mt: 3, mb: 2 }}
+//             >
+//               Sign Up
+//             </Button>
+//             <Grid container justifyContent="flex-end">
+//               <Grid item>
+//                 <Link href="#" variant="body2">
+//                   Already have an account? Sign in
+//                 </Link>
+//               </Grid>
+//             </Grid>
+//           </Box>
+//         </Box>
+//         <Copyright sx={{ mt: 5 }} />
+//       </Container>
+//     </ThemeProvider>
+//   );
+// }

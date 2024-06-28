@@ -20,7 +20,7 @@ const initialState = {
   isAdminExists: false,
   message: "",
   errors: {},
-  user: null,
+  user: {},
   loading: false,
   error: null,
   users: [],
@@ -46,6 +46,7 @@ const signupReducer = (state = initialState, action) => {
     case FETCH_USERS_FAILURE:
       return { ...state, loading: false, error: action.payload };
     case FETCH_USER_SUCCESS:
+      return { ...state, loading: false, user: { ...action.payload.Details } };
     case UPDATE_USER_SUCCESS:
       return { ...state, userData: action.payload, error: null };
     case DELETE_USER_SUCCESS:
@@ -54,6 +55,37 @@ const signupReducer = (state = initialState, action) => {
     case UPDATE_USER_FAILURE:
     case DELETE_USER_FAILURE:
       return { ...state, error: action.payload };
+    case FETCH_USER_SUCCESS:
+      return {
+        ...state,
+        userData: action.payload,
+        error: null,
+      };
+    case FETCH_USER_FAILURE:
+      return {
+        ...state,
+        userData: null,
+        error: action.payload,
+      };
+    case UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        userData: action.payload,
+        error: null,
+      };
+    case UPDATE_USER_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case DELETE_USER_SUCCESS:
+      return { ...state };
+    case DELETE_USER_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
     default:
       return state;
   }

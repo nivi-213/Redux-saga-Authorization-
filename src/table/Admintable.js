@@ -1,167 +1,60 @@
-// // // src/components/AdminTable.js
-// // import React, { useEffect } from 'react';
-// // import { useDispatch, useSelector } from 'react-redux';
-// // import { fetchUsersRequest } from '../action/authAction';
-
-// // const AdminTable = () => {
-// //   const dispatch = useDispatch();
-// //   const { users,  } = useSelector((state) => state);
-
-// //   useEffect(() => {
-// //     dispatch(fetchUsersRequest());
-// //   }, [dispatch]);
-
-
-// //   return (
-// //     <div className="container tab-style">
-// //       <div>
-// //         <h2>Admin Profile</h2>
-// //         <table className="table">
-// //           <thead>
-// //             <tr>
-// //               <th>User Name</th>
-// //               <th>Email</th>
-// //               <th>Mobile Number</th>
-// //               <th>Status</th>
-// //             </tr>
-// //           </thead>
-// //           <tbody>
-// //             {users.map((user) => (
-// //               <tr key={user.userId}>
-// //                 <td>{user.userName}</td>
-// //                 <td>{user.email}</td>
-// //                 <td>{user.mobileNo}</td>
-// //                 <td>{user.status}</td>
-// //               </tr>
-// //             ))}
-// //           </tbody>
-// //         </table>
-// //       </div>
-// //     </div>
-// //   );
-// // };
-
-// // export default AdminTable;
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-// // import './UserTable.css';
-
-// const AdminTable = () => {
-//   const [users, setUsers] = useState([]);
-//   const [error, setError] = useState(null);
-
-//   useEffect(() => {
-//     const fetchUsers = async () => {
-//       const token = localStorage.getItem('token');
-
-//       if (!token) {
-//         setError('Token not found in local storage');
-//         return;
-//       }
-
-//       try {
-//         const response = await axios.get('http://localhost:8080/api/admin/getAllusers', {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         });
-
-//         setUsers(response.data);
-//       } catch (error) {
-//         setError('Error fetching user data');
-//         console.error('Error fetching user data:', error);
-//       }
-//     };
-
-//     fetchUsers();
-//   }, []);
-
-//   if (error) {
-//     return (
-//       <div className="container tab-style">
-//         <p>Error: {error}</p>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="container tab-style">
-//       <div>
-//         <h2>Admin Profile</h2>
-//         <table className="table">
-//           <thead>
-//             <tr>
-//               <th>User Name</th>
-//               <th>Email</th>
-//               <th>Mobile Number</th>
-     
-
-//               <th>Status</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             {users&&users.map(user => (
-//               <tr key={user.userId}>
-//                 <td>{user.userName}</td>
-//                 <td>{user.email}</td>
-//                 <td>{user.mobileNo}</td>
-//                 <td>{user.status}</td>
-        
-//               </tr>
-//             ))}
-//           </tbody>
-//         </table>``
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AdminTable;
-// src/components/AdminTable.js
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUsersRequest } from '../action/authAction';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUsersRequest, deleteUser } from "../action/authAction";
+import { useNavigate } from "react-router-dom";
 
 const AdminTable = () => {
   const dispatch = useDispatch();
-  const { users, loading, error } = useSelector((state) => state);
+  const { users } = useSelector((state) => state);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchUsersRequest());
   }, [dispatch]);
 
-  if (loading) {
-    return <div className="container tab-style"><p>Loading...</p></div>;
-  }
+  const handleDelete = (email) => {
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      dispatch(deleteUser(email));
 
-  if (error) {
-    return <div className="container tab-style"><p>Error: {error}</p></div>;
-  }
+      navigate("/login");
+    }
+  };
 
   return (
-    <div className="container tab-style">
-      <div>
+    <div className="container mt-5 tab-style">
+      <div className="card">
         <h2>Admin Profile</h2>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>User Name</th>
-              <th>Email</th>
-              <th>Mobile Number</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.userId}>
-                <td>{user.userName}</td>
-                <td>{user.email}</td>
-                <td>{user.mobileNo}</td>
-                <td>{user.status}</td>
+        <div className="table-responsive">
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th>User Name</th>
+                <th>Email</th>
+                <th>Mobile Number</th>
+                <th>Status</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user.userId}>
+                  <td>{user.userName}</td>
+                  <td>{user.email}</td>
+                  <td>{user.mobileNo}</td>
+                  <td>{user.status}</td>
+                  <td>
+                    <button
+                      className="btn btn-danger ms-2"
+                      onClick={() => handleDelete(user.email)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
