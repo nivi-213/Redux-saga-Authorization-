@@ -1,16 +1,48 @@
+// ReusableInput.js
 import React from 'react';
 import { Field, ErrorMessage } from 'formik';
-import '../signup.css';
-const InputField = ({ name, type, placeholder, errors, touched }) => (
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+
+const ReusableInput = ({ type, name, placeholder, showPassword, togglePasswordVisibility }) => (
   <div className="mb-3">
-    <Field
-      type={type}
-      name={name}
-      className={`form-control ${errors[name] && touched[name] ? 'is-invalid' : ''}`}
-      placeholder={placeholder}
-    />
-    <ErrorMessage name={name} component="div" className="text-danger errorring" />
+    {type === 'password' ? (
+      <div className="input-group">
+        <Field
+          type={showPassword ? 'text' : 'password'}
+          name={name}
+          className="form-control password-input"
+          placeholder={placeholder}
+        />
+        <span className="input-group-text toggle-password" onClick={togglePasswordVisibility}>
+          <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
+        </span>
+      </div>
+    ) : (
+      <Field
+        type={type}
+        name={name}
+        className="form-control"
+        placeholder={placeholder}
+      />
+    )}
+    <ErrorMessage name={name} component="div" className="text-danger" />
   </div>
 );
 
-export default InputField;
+const RoleSelector = ({ name, error, touched }) => (
+  <div className="mb-3 ">
+    <Field
+      as="select"
+      name={name}
+      className={`form-select ${error && touched ? 'is-invalid' : ''}`}
+    >
+      <option value="">Select role</option>
+      <option value="User">User</option>
+      <option value="Admin">Admin</option>
+    </Field>
+    <ErrorMessage name={name} component="div" className="text-danger" />
+  </div>
+);
+
+export { ReusableInput, RoleSelector };

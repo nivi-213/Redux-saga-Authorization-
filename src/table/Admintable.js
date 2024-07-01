@@ -13,7 +13,7 @@ const AdminTable = () => {
   }, [dispatch]);
 
   const handleDelete = (email) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
+    if (window.confirm("Are you sure you want to delete this Admin?")) {
       dispatch(deleteUser(email));
 
       navigate("/login");

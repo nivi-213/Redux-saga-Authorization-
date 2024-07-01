@@ -1,4 +1,3 @@
-
 import axios from "axios";
 
 import { takeLatest, call, put } from "redux-saga/effects";
@@ -48,6 +47,7 @@ function* signupSaga(action) {
             "Role 'Admin' is not applicable for registration.";
         }
       });
+      console.log(errorList);
       yield put({ type: SIGNUP_FAILURE, payload: newErrors });
     } else {
       yield put({
@@ -122,7 +122,7 @@ function* fetchUserSaga(action) {
     //     Authorization: `Bearer ${token}`,
     //   },
     // });
-
+    // console.log(response);
     yield put({ type: FETCH_USER_SUCCESS, payload: response.data });
   } catch (error) {
     yield put({
@@ -131,7 +131,6 @@ function* fetchUserSaga(action) {
     });
   }
 }
-
 function* updateUserSaga(action) {
   try {
     const token = localStorage.getItem("token");
@@ -146,8 +145,10 @@ function* updateUserSaga(action) {
         },
       }
     );
+    console.log(response);
 
     yield put({ type: UPDATE_USER_SUCCESS, payload: response.data });
+    console.log(response.data)
   } catch (error) {
     yield put({
       type: UPDATE_USER_FAILURE,

@@ -22,6 +22,18 @@ export const fetching = async (payload, token) => {
 
   return response;
 };
+export const fetchAdminn = async (payload, token) => {
+  const response = await axios.get(
+    `http://localhost:8080/api/admin/getAllusers/${payload}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response;
+};
 export const deleteUser = async (useremail, token) => {
   const response = await axios.delete(
     `http://localhost:8080/api/user/deleteUser/${useremail}`,

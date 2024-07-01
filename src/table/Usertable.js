@@ -10,10 +10,13 @@ const UserTable = () => {
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    id: "",
+    userId: "",
     userName: "",
     email: "",
+    password: "",
+    confirmPassword: "",
     mobileNo: "",
+    userRole: "",
     status: "",
   });
   useEffect(() => {
@@ -27,10 +30,14 @@ const UserTable = () => {
   useEffect(() => {
     if (userData && userData.Details) {
       setFormData({
-        id: userData.Details.id,
+        userId: userData.Details.userId,
         userName: userData.Details.userName,
         email: userData.Details.email,
         mobileNo: userData.Details.mobileNo,
+        password: userData.Details.password,
+
+        confirmPassword: userData.Details.confirmPassword,
+
         status: userData.Details.status,
       });
     }
@@ -43,26 +50,38 @@ const UserTable = () => {
       [name]: value,
     });
   };
-  const handleupdate = () => {
-    if (userData.password) {
-      dispatch(updateUser(userData));
-    } else {
+  // const handleupdate = () => {
+  //   dispatch(updateUser(formData));
+  //   console.log(formData);
+  //   setIsEditing(false);
 
-      console.error('Password is null or undefined');
-  
+  // };
+  const handleupdate = () => {
+    dispatch(updateUser(formData));
+    setIsEditing(false);
+    const useremail = localStorage.getItem("email");
+    if (useremail) {
+      dispatch(fetchUser(useremail));
     }
   };
-  
 
-  const handleEdit = () => {
+  const handleEdit = (useremail) => {
     setFormData({
+      userId: userData.userId,
       userName: userData.userName,
       email: userData.email,
       mobileNo: userData.mobileNo,
+      password: userData.password,
+      confirmPassword: userData.confirmPassword,
+      userRole:userData.userRole,
       status: userData.status,
     });
+    dispatch(fetchUser(useremail));
     setIsEditing(true);
   };
+  // useEffect(() => {
+  //   dispatch(fetchUsersRequest());
+  // }, [dispatch]);
 
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this user?")) {
@@ -118,6 +137,26 @@ const UserTable = () => {
                   />
                 </label>
                 <label>
+                  Password:
+                  <input
+                    className="form-control"
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                  />
+                </label>
+                <label>
+                  confirmPassword:
+                  <input
+                    className="form-control"
+                    type="password"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                  />
+                </label>
+                <label>
                   Status:
                   <input
                     className="form-control"
@@ -158,7 +197,7 @@ const UserTable = () => {
                       <td>
                         <button
                           className="btn btn-primary"
-                          onClick={handleEdit}
+                          onClick={() => handleEdit(userData.email)}
                         >
                           Edit
                         </button>

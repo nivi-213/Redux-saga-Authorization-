@@ -24,7 +24,7 @@ const initialState = {
   loading: false,
   error: null,
   users: [],
-  userData: null, // Initialize userData as null
+  userData: [], // Initialize userData as null
 };
 
 const signupReducer = (state = initialState, action) => {
