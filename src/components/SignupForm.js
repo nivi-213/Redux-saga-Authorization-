@@ -196,7 +196,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { signupRequest } from '../action/authAction';
+import { signupRequest ,signupFailure} from '../action/authAction';
 import { ReusableInput, RoleSelector } from '../components/resuableComponent/InputField'; // Updated import
 import './signup.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -206,6 +206,7 @@ const SignupForm = () => {
   const dispatch = useDispatch();
 
   const { message } = useSelector((state) => state);
+  const { errors }  = useSelector((state) => state);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -238,35 +239,23 @@ const SignupForm = () => {
   const handleSignupSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
       await dispatch(signupRequest(values));
-    } catch (error) {
-      if (error.response && error.response.data) {
-        const errorData = error.response.data;
-        const formattedErrors = {};
-
-        errorData.error.errorList.forEach((err) => {
-          if (err.includes(' email')) {
-            formattedErrors.email = 'Email already in use';
-          }
-          if (err.includes('userName')) {
-            formattedErrors.userName = 'Username already in use';
-          }
-          if (err.includes(' password')) {
-            formattedErrors.password = 'Password already in use';
-          }
-        });
-
-        setErrors(formattedErrors);
-      }
+    } catch (errors) {
+      dispatch(signupFailure(errors.message || 'Signup failed'));
+      
     }
-    setSubmitting(false);
+    // console.log(setErrors);
+    setErrors(errors )
+    setSubmitting(false)
   };
 
   useEffect(() => {
     if (message === 'User registered successfully!') {
       navigate('/login');
     }
+   
   }, [message, navigate]);
 
+  
   return (
     <div id="signup-form" className="container mt-5">
       {message && <p>{message}</p>}
@@ -318,7 +307,7 @@ const SignupForm = () => {
                 </div>
               </div>
               <div className="row">
-                <div className="col-md-6">
+                <div className="col-md-6 ">
                   <ReusableInput
                     type="tel"
                     name="mobileNo"
@@ -334,13 +323,17 @@ const SignupForm = () => {
                   />
                 </div>
               </div>
+             
               <button type="submit" className="btn btn-success w-100 mt-3">
                 Create Account
               </button>
-              <p className="text-center mt-3">
+              <div className='mt-2'>
+              <p className="text-center ">
                 Clicking <strong>Create Account</strong> means that you agree to our <a href="#">terms of service</a>.
-                <a href="/login" className="ms-4">Already have an Account? Login</a>
-              </p>
+                <a href="/login" className="ms-4 fw-bold">Already have an Account? Login</a>
+
+                </p>
+                </div>
               <hr />
             </Form>
           )}

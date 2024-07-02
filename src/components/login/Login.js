@@ -75,10 +75,10 @@ const LoginForm = () => {
             Login
           </button>
           <p className="text-center mt-3">
-            <a href="javascript:void(0)" className="text-decoration-none  me-4">
+            <a href="javascript:void(0)" className="text-decoration-none fw-bold  me-4">
               Forgotten account
             </a>
-            <a href="/signup" className="ms-4">
+            <a href="/signup" className="ms-4 fw-bold">
               Signup
             </a>
           </p>

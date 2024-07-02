@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUsersRequest, deleteUser } from "../action/authAction";
 import { useNavigate } from "react-router-dom";
-
+import "./userTable.css";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 const AdminTable = () => {
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state);
@@ -15,15 +16,24 @@ const AdminTable = () => {
   const handleDelete = (email) => {
     if (window.confirm("Are you sure you want to delete this Admin?")) {
       dispatch(deleteUser(email));
-
-      navigate("/login");
+       navigate("/login");
+      window.location.reload();
+     
     }
+  };
+  const openNew = () => {
+    navigate("/signup");
   };
 
   return (
     <div className="container mt-5 tab-style">
       <div className="card">
-        <h2>Admin Profile</h2>
+      <div className="d-flex mb-3">
+          <button className="rounded" onClick={openNew}>
+            <i className="fas fa-plus"></i> New
+          </button>
+          <h2 className="ms-4 mt-2">User Profile</h2>
+        </div>
         <div className="table-responsive">
           <table className="table table-striped">
             <thead>

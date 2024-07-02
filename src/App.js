@@ -39,6 +39,7 @@ import AdminTable from './table/Admintable';
 import UserTable from './table/Usertable';
 import Layout from './home/Layouts';
 import './App.css';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
           <Route path="/usertable" element={<UserTable />} />
         </Route>
       </Routes>
+      <ToastContainer /> 
     </BrowserRouter>
   );
 }

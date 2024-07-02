@@ -82,7 +82,7 @@ function* loginSaga(action) {
   } catch (error) {
     yield put({
       type: LOGIN_FAILURE,
-      payload: "Error logging in. Please try again.",
+      payload: "If you are not registered, please proceed to register and then login",
     });
   }
 }

@@ -27,6 +27,10 @@ export const signupRequest = (userData) => ({
   type: SIGNUP_REQUEST,
   payload: userData,
 });
+export const signupFailure = (error) => ({
+  type: SIGNUP_FAILURE,
+  payload: error,
+});
 
 export const loginRequest = (credentials) => ({
   type: LOGIN_REQUEST,
