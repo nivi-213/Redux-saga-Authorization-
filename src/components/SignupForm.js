@@ -274,8 +274,8 @@ const SignupForm = () => {
                   />
                 </div>
           
-              <div className="row">
-                <div className="col-md-6">
+              {/* <div className="row"> */}
+                <div className="col-md-12">
                   <ReusableInput
                     type="tel"
                     name="mobileNo"
@@ -284,7 +284,7 @@ const SignupForm = () => {
                     touched={touched.mobileNo}
                   />
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-12">
                   <RoleSelector
                     name="userRole"
                     error={errors.userRole}
@@ -298,7 +298,7 @@ const SignupForm = () => {
                     touched={touched.gender}
                   />
                 </div> */}
-              </div>
+              {/* </div> */}
               <button type="submit" className="btn btn-success w-100 mt-3">
                 Create Account
               </button>
