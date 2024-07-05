@@ -1,34 +1,3 @@
-// import logo from './logo.svg';
-// import './App.css';
-
-// import RegisterForm from './components/SignupForm';
-// import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-
-// import LoginForm from './components/login/Login';
-// import Home from './home/Home';
-// import AdminTable from './table/Admintable'; 
-// import UserTable from './table/Usertable';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <BrowserRouter>
-//         <Routes>
-//         <Route path="/" element={<Navigate to="/home" />} />
-
-//           <Route path="/home" element={<Home />} />
-//           <Route path="/signup" element={<RegisterForm />} />
-//           <Route path="/login" element={<LoginForm />} />
-//           <Route path="/admintable" element={<AdminTable />} />
-//           <Route path="/usertable" element={<UserTable />} />
-
-//         </Routes>
-//       </BrowserRouter>
-//     </div>
-//   );
-// }
-
-// export default App;
 import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
@@ -46,15 +15,15 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route path="/" element={<Navigate to="/home" />} />
+          <Route path="/usertable" element={<UserTable />} />
+          <Route path="/admintable" element={<AdminTable />} />
           <Route path="/home" element={<Home />} />
           <Route path="/signup" element={<RegisterForm />} />
           <Route path="/login" element={<LoginForm />} />
-          <Route path="/admintable" element={<AdminTable />} />
-          <Route path="/usertable" element={<UserTable />} />
         </Route>
+        <Route path="/" element={<Navigate to="/home" />} />
       </Routes>
-      <ToastContainer /> 
+      <ToastContainer />
     </BrowserRouter>
   );
 }

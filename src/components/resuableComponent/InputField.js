@@ -58,7 +58,7 @@ const ReusableInput = ({ type, name, placeholder, showPassword, togglePasswordVi
         <Field
           type={showPassword ? 'text' : 'password'}
           name={name}
-          className={` form-control ${error && touched ? 'is-invalid' : ''}`}
+          className={` form-control  ${error && touched ? 'is-invalid' : ''}`}
 
           placeholder={placeholder}
         />

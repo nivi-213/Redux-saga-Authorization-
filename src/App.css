@@ -6,7 +6,7 @@
   background-size: cover;
 
   /* Any other styling for the background image */
-
+/* 
 .background {
   background-image: url("https://images.unsplash.com/photo-1512386233331-f023884a92e8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1495&q=80");
 
@@ -17,7 +17,28 @@
   justify-content: center;
   align-items: center;
   overflow-y: hidden;
+} */
+
+.background {
+  background-image: url("https://images.unsplash.com/photo-1512386233331-f023884a92e8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1495&q=80");
+  background-size: cover;
+  background-position: center;
+  height: 100vh; /* Adjust as needed */
 }
 
-/* Styles for UserTable and AdminTable */
+.no-background {
+  background-color: #fff; /* Or any other background color */
+  height: 100vh; /* Adjust as needed */
+}
 
+
+
+.main-content {
+  margin-left: 250px; /* Match the width of the sidenav */
+  padding: 20px; /* Adjust as needed */
+}
+
+.full-content {
+  margin-left: 0;
+  padding: 20px; /* Adjust as needed */
+}
