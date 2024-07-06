@@ -13,7 +13,11 @@ const Sidebar = () => {
 
   return (
     <div>
+      
       <div className={`navigation ${active ? 'active' : ''}`}>
+        <div>
+          <img className='logopng' src="logo-sm.png" alt=""  width="30px" height="30px" />
+</div>
         <ul>
           <li>
             <a href="#">
@@ -52,7 +56,7 @@ const Sidebar = () => {
             </a>
           </li>
           <li>
-            <a href="#" className='signout'>
+            <a href="#" className=''>
               <span className="icon"><FontAwesomeIcon icon={faSignOutAlt} /></span>
               <span className="title">Sign Out</span>
             </a>

@@ -14,10 +14,15 @@ const Layout = () => {
   return (
     <div className={isBackgroundRoute ? "background" : "no-background"}>
       {isSidebarRoute && (
-        <div className="sidenav">
-          <Header />
-          <Sidebar />
+        <>
+          <div className='headernav'>
+          <Header /> 
         </div>
+        <div className="sidenav">
+        
+          <Sidebar />
+          </div>
+          </>
       )}
       <div className={isSidebarRoute ? "main-content" : "full-content"}>
         <Outlet />
